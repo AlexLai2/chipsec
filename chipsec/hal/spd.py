@@ -1,4 +1,25 @@
 #!/usr/bin/python
+#
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+#
 #CHIPSEC: Platform Security Assessment Framework
 #Copyright (c) 2010-2020, Intel Corporation
 #
@@ -17,7 +38,6 @@
 #
 #Contact information:
 #chipsec@intel.com
-#
 
 """
 Access to Memory (DRAM) Serial Presence Detect (SPD) EEPROM
@@ -289,7 +309,7 @@ Base Configuration and DRAM Parameters
 #
 ###############################################################################
 
-class SPD():
+class SPD:
     def __init__( self, smbus ):
         self.smbus = smbus
 
@@ -362,7 +382,7 @@ class SPD():
             if self.isSPDPresent( d ): _dimms.append( d )
         if logger().HAL:
             logger().log( "Detected the following SPD devices:" )
-            for _dimm in _dimms: logger().log( "%s: 0x%02X" % (SPD_DIMMS[_dimm],_dimm) )
+            for _dimm in _dimms: logger().log( "{}: 0x{:02X}".format(SPD_DIMMS[_dimm],_dimm) )
         return _dimms 
 
     def isSPDPresent( self, device=SPD_SMBUS_ADDRESS ):

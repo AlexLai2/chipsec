@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<configuration platform="PCH_D1500" >
+<!-- XML configuration file for C610 series PCH - Wellsburg
+* Intel(R) D1500 Series Chipset Family Platform Controller Hub (PCH)
+* 544040-544044
+-->
+<!--
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+
+CHIPSEC: Platform Security Assessment Framework
+Copyright (c) 2019-2020, Intel Corporation
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; Version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Contact information:
+chipsec@intel.com
+-->
+  <pci>
+  </pci>
+
+  <registers>
+
+    <!-- LPC Interface Bridge -->
+    <register name="ULKMC" type="pcicfg" device="LPC" offset="0x94" size="4" desc="USB Legacy Keyboard Mouse">
+      <field name="60REN"      bit="0"  size="1" desc="SMI on Port 60 Reads Enable"/>
+      <field name="60WEN"      bit="1"  size="1" desc="SMI on Port 60 Writes Enable"/>
+      <field name="64REN"      bit="2"  size="1" desc="SMI on Port 64 Reads Enable"/>
+      <field name="64WEN"      bit="3"  size="1" desc="SMI on Port 64 Writes Enable"/>
+      <field name="USBSMIEN"   bit="4"  size="1" desc="SMI on USB IRQ Enable"/>
+      <field name="A20PASSEN"  bit="5"  size="1" desc="A20Gate Pass-Through Enable"/>
+      <field name="PSTATE"     bit="6"  size="1" desc="Pass Through State"/>
+      <field name="SMIATENDPS" bit="7"  size="1" desc="SMI at End of Pass-Through Enable"/>
+      <field name="TRAPBY60R"  bit="8"  size="1" desc="SMI Caused by Port 60 Read"/>
+      <field name="TRAPBY60W"  bit="9"  size="1" desc="SMI Caused by Port 60 Write"/>
+      <field name="TRAPBY64R"  bit="10" size="1" desc="SMI Caused by Port 64 Read"/>
+      <field name="TRAPBY64W"  bit="11" size="1" desc="SMI Caused by Port 64 Write"/>
+      <field name="RCBALK"     bit="13" size="1" desc="RCBA Lock"/>
+      <field name="SMIBYENDPS" bit="15" size="1" desc="SMI Caused by End of Pass-Through"/>
+    </register>
+
+    <!-- SPSR PCIe Configuration Space -->
+    <register name="PLKCTL_Fn0" type="pcicfg" bus="0" dev="0" fun="0" offset="0xEA" size="2" desc="Personality Lock Key Control Register">
+      <field name="CL" bit="0" size="1" desc="Capability Lock"/>
+    </register>
+    <register name="PLKCTL_Fn1" type="pcicfg" bus="0" dev="0" fun="1" offset="0xEA" size="2" desc="Personality Lock Key Control Register">
+      <field name="CL" bit="0" size="1" desc="Capability Lock"/>
+    </register>
+    <register name="PLKCTL_Fn2" type="pcicfg" bus="0" dev="0" fun="2" offset="0xEA" size="2" desc="Personality Lock Key Control Register">
+      <field name="CL" bit="0" size="1" desc="Capability Lock"/>
+    </register>
+    <register name="PLKCTL_Fn3" type="pcicfg" bus="0" dev="0" fun="3" offset="0xEA" size="2" desc="Personality Lock Key Control Register">
+      <field name="CL" bit="0" size="1" desc="Capability Lock"/>
+    </register>
+
+    <!-- PCH Root Complex Register Base MMIO registers -->
+    <register name="TCLOCKDN" type="mmio" bar="RCBA" offset="0x0050" size="4" desc="Chipset Initialization Register 0050">
+      <field name="TC_LockDown" bit="31"  size="1" desc="TCLOCKDN"/>
+    </register>
+    <register name="PM_CFG" type="mmio" bar="RCBA" offset="0x3318" size="4" desc="PMC Configuration">
+      <field name="BIT27" bit="27" size="1" desc="BIT 27"/>
+      <field name="BIT22" bit="22" size="1" desc="BIT 22"/>
+    </register>
+
+    <!-- SPI Flash Controller MMIO registers -->
+    <register name="SRDL" type="mmio" bar="SPIBAR" offset="0xF0" size="4" desc="Soft Reset Data Lock">
+      <field name="SSL"  bit="0"  size="1" desc="Set_Stap Lock"/>
+    </register>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--      Undefined Registers     -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <register name="SMBCNTL_0_22"       undef="Not defined for platform" />
+    <register name="SMBCNTL_1_22"       undef="Not defined for platform" />
+    <register name="MSDEVFUNCHIDE"      undef="Not defined for platform" />
+    <register name="MISCCTRLSTS0_0.2.0" undef="Not defined for platform" />
+    <register name="MISCCTRLSTS0_0.2.1" undef="Not defined for platform" />
+    <register name="MISCCTRLSTS0_0.2.2" undef="Not defined for platform" />
+    <register name="MISCCTRLSTS0_0.2.3" undef="Not defined for platform" />
+
+
+  </registers>
+
+  <controls>
+  </controls>
+
+</configuration>

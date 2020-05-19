@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<configuration platform="KNL" >
+<!-- XML configuration file for Knights Landing Server
+-->
+<!--
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+
+CHIPSEC: Platform Security Assessment Framework
+Copyright (c) 2018-2020, Intel Corporation
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; Version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Contact information:
+chipsec@intel.com
+-->
+  <pci>
+    <device name="_MISCCTRLSTS0_0.0.2" bus="0" dev="0x00" fun="2" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.0.3" bus="0" dev="0x00" fun="3" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.1.0" bus="0" dev="0x01" fun="0" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.1.1" bus="0" dev="0x01" fun="1" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.1.2" bus="0" dev="0x01" fun="2" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.1.3" bus="0" dev="0x01" fun="3" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.2.0" bus="0" dev="0x02" fun="0" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.2.1" bus="0" dev="0x02" fun="1" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.2.2" bus="0" dev="0x02" fun="2" vid="0x8086" />
+    <device name="_MISCCTRLSTS0_0.2.3" bus="0" dev="0x02" fun="3" vid="0x8086" />
+    <device name="_SMM_FEATURE_CONTROL" bus="0" dev="0x08" fun="1" vid="0x8086" />
+    <device name="_LT_CONTROL"         bus="1" dev="0xF"  fun="5" vid="0x8086" />
+    <device name="_SMBCNTL_0"          bus="1" dev="0x1E" fun="0" vid="0x8086" />
+    <device name="_SMBCNTL_1"          bus="1" dev="0x1E" fun="0" vid="0x8086" />
+    <device name="_CSR_DESIRED_CORES_CFG_1" bus="1" dev="0x1E" fun="1" vid="0x8086" />
+  </pci>
+
+  <mmio>
+  </mmio>
+
+  <io>
+  </io>
+
+  <memory>
+  </memory>
+
+  <registers>
+    <!-- Host Controller -->
+    <register name="ERRINJCON" type="mmcfg" bus="0" dev="0" fun="0" offset="0x1D8" size="8" desc="PCI Express Error Injection Control Register">
+      <field name="errinjdis"    bit="0" size="1" desc="Error Injection Disable"/>
+      <field name="cause_rcverr" bit="1" size="1" desc="Cause a Receiver Error"/>
+      <field name="cause_ctoerr" bit="2" size="1" desc="Cause a Completion Timeout Error"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.0.2" type="mmcfg" bus="0" dev="0" fun="2" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.0.3" type="mmcfg" bus="0" dev="0" fun="3" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.1.0" type="mmcfg" bus="0" dev="1" fun="0" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.1.1" type="mmcfg" bus="0" dev="1" fun="1" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.1.2" type="mmcfg" bus="0" dev="1" fun="2" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.1.3" type="mmcfg" bus="0" dev="1" fun="3" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.2.0" type="mmcfg" bus="0" dev="2" fun="0" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.2.1" type="mmcfg" bus="0" dev="2" fun="1" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.2.2" type="mmcfg" bus="0" dev="2" fun="2" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="MISCCTRLSTS0_0.2.3" type="mmcfg" bus="0" dev="2" fun="3" offset="0x188" size="4" desc="MISC Control and Status Register 0">
+      <field name="inbound_configuration_enable"                       bit="1"  size="1" desc="Enable Inbound Configuration Requests"/>
+      <field name="enable_acpi_mode_for_pm"                            bit="2"  size="1" desc="Power Management events handled via _PMEGPE messages"/>
+      <field name="enable_acpi_mode_for_hotplug"                       bit="3"  size="1" desc="Hotplug events handled via _HPGPE messages"/>
+      <field name="enable_system_error_only_for_aer"                   bit="4"  size="1" desc="PCI Express errors do not trigger MSI or Intx"/>
+      <field name="send_pme_turn_off_message"                          bit="5"  size="1" desc="IIO sends PME_TURN_OFF message"/>
+      <field name="enable_timeout_for_receiving_pme_to_ack"            bit="6"  size="1" desc="IIO enables timeout"/>
+      <field name="pme2acktoctrl"                                      bit="7"  size="2" desc="pme2acktoctrl"/>
+      <field name="dispdspolling"                                      bit="9"  size="1" desc="Disables gen2"/>
+      <field name="disable_ob_parity_check"                            bit="12" size="1" desc="disable_ob_parity_check"/>
+      <field name="tlp_on_any_lane"                                    bit="13" size="1" desc="tlp_on_any_lane"/>
+      <field name="allow_one_np_os"                                    bit="14" size="1" desc="allow_one_np_os"/>
+      <field name="dis_hdr_storage"                                    bit="15" size="1" desc="dis_hdr_storage"/>
+      <field name="force_ep_biterr"                                    bit="16" size="1" desc="Force EP Bit Error"/>
+      <field name="force_data_perr"                                    bit="17" size="1" desc="Force Data Parity Error"/>
+      <field name="max_read_completion_combine_size"                   bit="18" size="1" desc="All completions are returned without combining"/>
+      <field name="maltlp_32baddr64bhdr_en"                            bit="20" size="1" desc="Enables reporting a Malformed packet"/>
+      <field name="zero_ob_tc"                                         bit="21" size="1" desc="Forces TC field to zero for outbound requests"/>
+      <field name="check_cpl_tc"                                       bit="22" size="1" desc="check_cpl_tc"/>
+      <field name="phold_disable"                                      bit="23" size="1" desc="IIO responds Unsupported request on assert_phold"/>
+      <field name="peer2peer_memory_read_disable"                      bit="24" size="1" desc="Peer-to-peer memory reads are master aborted"/>
+      <field name="peerpeer_memory_write_disable"                      bit="25" size="1" desc="Peer-to-peer memory writes are master aborted"/>
+      <field name="EOIFD"                                              bit="26" size="1" desc="EOI Forwarding Disable"/>
+      <field name="system_interrupt_only_on_link_bw_management_status" bit="27" size="1" desc="Disable generating MSI and Intx"/>
+      <field name="to_dis"                                             bit="28" size="1" desc="Disables timeouts"/>
+      <field name="cfg_to_en"                                          bit="29" size="1" desc="Disables/enables config timeouts"/>
+      <field name="inbound_io_disable"                                 bit="30" size="1" desc="inbound_io_disable"/>
+      <field name="disable_l0s_on_transmitter"                         bit="31" size="1" desc="IIO never puts its tx in L0s state"/>
+    </register>
+    <register name="IIOMISCCTRL" type="mmcfg" bus="0" dev="5" fun="0" offset="0x1C0" size="4" desc="IIO MISC Control">
+      <field name="disable_reqid_filter" bit="48" size="1" desc="disable_reqid_filter bit"/>
+    </register>
+
+    <!-- LPC Interface Bridge -->
+    <register name="ULKMC" type="pcicfg" bus="0" dev="0x1F" fun="0" offset="0x94" size="4" desc="USB Legacy Keyboard Mouse">
+      <field name="60REN"      bit="0"  size="1" desc="SMI on Port 60 Reads Enable"/>
+      <field name="60WEN"      bit="1"  size="1" desc="SMI on Port 60 Writes Enable"/>
+      <field name="64REN"      bit="2"  size="1" desc="SMI on Port 64 Reads Enable"/>
+      <field name="64WEN"      bit="3"  size="1" desc="SMI on Port 64 Writes Enable"/>
+      <field name="USBSMIEN"   bit="4"  size="1" desc="SMI on USB IRQ Enable"/>
+      <field name="A20PASSEN"  bit="5"  size="1" desc="A20Gate Pass-Through Enable"/>
+      <field name="PSTATE"     bit="6"  size="1" desc="Pass Through State"/>
+      <field name="SMIATENDPS" bit="7"  size="1" desc="SMI at End of Pass-Through Enable"/>
+      <field name="TRAPBY60R"  bit="8"  size="1" desc="SMI Caused by Port 60 Read"/>
+      <field name="TRAPBY60W"  bit="9"  size="1" desc="SMI Caused by Port 60 Write"/>
+      <field name="TRAPBY64R"  bit="10" size="1" desc="SMI Caused by Port 64 Read"/>
+      <field name="TRAPBY64W"  bit="11" size="1" desc="SMI Caused by Port 64 Write"/>
+      <field name="RCBALK"     bit="13" size="1" desc="RCBA Lock"/>
+      <field name="SMIBYENDPS" bit="15" size="1" desc="SMI Caused by End of Pass-Through"/>
+    </register>  
+
+    <!-- Thermal Sensor Registers -->
+    <register name="TBARB" type="pcicfg" bus="0" dev="0x1F" fun="6" offset="0x40" size="4" desc="BIOS Assigned Thermal Base Register">
+      <field name="SPTYPEN" bit="0"  size="1"  desc="Space Type Enable"/>
+      <field name="ADDRNG"  bit="1"  size="2"  desc="Address Range"/>
+      <field name="PREF"    bit="3"  size="1"  desc="Prefetchable"/>
+      <field name="TBA"     bit="12" size="20" desc="Thermal Base Address"/>
+    </register>
+    <register name="TBARBH" type="pcicfg" bus="0" dev="0x1F" fun="6" offset="0x44" size="4" desc="BIOS Assigned Thermal Base High DWord Register">
+      <field name="TBAH" bit="0" size="32" desc="Thermal Base Address High"/>
+    </register>
+
+    <!-- PCH Root Complex Register Base MMIO registers -->
+    <register name="TCLOCKDN" type="mmio" bar="RCBA" offset="0x0050" size="4" desc="Chipset Initialization Register 0050">
+      <field name="TC_LockDown" bit="31"  size="1" desc="TCLOCKDN"/>
+    </register>
+
+    <!-- SPSR PCIe Configuration Space -->
+    <register name="MSDEVFUNCHIDE" type="pcicfg" bus="0" dev="0x11" fun="0" offset="0xD4" size="4" desc="MS Unit Device Function Hide Register">
+      <field name="SPSR"         bit="0"  size="1" desc="Function 0"/>
+      <field name="MEXP_SMBUS_0" bit="1"  size="1" desc="Function 1"/>
+      <field name="MEXP_SMBUS_1" bit="2"  size="1" desc="Function 2"/>
+      <field name="MEXP_SMBUS_2" bit="3"  size="1" desc="Function 3"/>
+      <field name="sSATA"        bit="4"  size="1" desc="Function 4"/>
+      <field name="LOCK"         bit="31" size="1" desc="Lock bit for MSDEVFUNCHIDE"/>
+    </register>
+    
+    <register name="LT_CONTROL" type="pcicfg" bus="1" dev="0xF" fun="5" offset="0xD0" size="4" desc="LT_CONTROL register">
+      <field name="LT_Target_enable" bit="3" size="1" desc="Sets LT_Target RO"/>
+    </register>
+    
+    <register name="SMM_FEATURE_CONTROL" type="pcicfg" bus="0" dev="0x8" fun="1" offset="0x58" size="4" desc="SMM and Code Access Check Violation features"/>
+
+    <!-- PCH Root Complex Register Base MMIO registers -->
+    <register name="PM_CFG" type="mmio" bar="RCBA" offset="0x3318" size="4" desc="PMC Configuration">
+      <field name="BIT27" bit="27" size="1" desc="BIT 27"/>
+      <field name="BIT22" bit="22" size="1" desc="BIT 22"/>
+    </register>
+
+    <!-- SPSR PCIe Configuration Space -->
+    <register name="SMBCNTL_0" type="mmcfg" bus="1" dev="0x1E" fun="0" offset="0x108" size="4" desc="SMBCNTL_0 Register">
+      <field name="tsod_present"     bit="0"  size="8" desc="DIMM slot mask"/>
+      <field name="smb_tsod_poll_en" bit="8"  size="1" desc="TSOD polling enable"/>
+      <field name="start_tsod_poll"  bit="9"  size="1" desc="Start reading of all enabled devices"/>
+      <field name="smb_soft_rst"     bit="10" size="1" desc="SMBus software reset strobe"/>
+      <field name="smb_sbe_err0_en"  bit="21" size="1" desc="Enable ERR0 assertion"/>
+      <field name="smb_sbe_smi_en"   bit="22" size="1" desc="Enable SMI generation"/>
+      <field name="smb_sbe_en"       bit="23" size="1" desc="SMBus error recovery enable"/>
+      <field name="smb_dis_wrt"      bit="26" size="1" desc="Disable SMBus Write"/>
+      <field name="smb_ckovrd"       bit="27" size="1" desc="Clock override"/>
+      <field name="smb_dti"          bit="28" size="4" desc="Device Type Identifier"/>
+    </register>
+    <register name="SMBCNTL_1" type="mmcfg" bus="1" dev="0x1E" fun="0" offset="0x118" size="4" desc="SMBCNTL_1 Register">
+      <field name="tsod_present"     bit="0"  size="8" desc="DIMM slot mask"/>
+      <field name="smb_tsod_poll_en" bit="8"  size="1" desc="TSOD polling enable"/>
+      <field name="start_tsod_poll"  bit="9"  size="1" desc="Start reading of all enabled devices"/>
+      <field name="smb_soft_rst"     bit="10" size="1" desc="SMBus software reset strobe"/>
+      <field name="smb_sbe_err0_en"  bit="21" size="1" desc="Enable ERR0 assertion"/>
+      <field name="smb_sbe_smi_en"   bit="22" size="1" desc="Enable SMI generation"/>
+      <field name="smb_sbe_en"       bit="23" size="1" desc="SMBus error recovery enable"/>
+      <field name="smb_dis_wrt"      bit="26" size="1" desc="Disable SMBus Write"/>
+      <field name="smb_ckovrd"       bit="27" size="1" desc="Clock override"/>
+      <field name="smb_dti"          bit="28" size="4" desc="Device Type Identifier"/>
+    </register>
+
+    <!-- Power Control Unit (PCU) Registers -->
+    <register name="CSR_DESIRED_CORES_CFG_1" type="pcicfg" bus="1" dev="0x1E" fun="1" offset="0xA8" size="4" desc="Number of cores-threads to exhist">
+      <field name="CORE_OFF_MASK" bit="0"  size="6" desc="Cores off mask"/>
+      <field name="SMT_DISABLE"   bit="30" size="1" desc="Disable simultaneous multithreading"/>
+      <field name="LOCK"          bit="31" size="1" desc="Locks CSR_DESIRED_CORES register"/>
+    </register>
+
+    <!-- SPI Flash Controller MMIO registers -->
+    <register name="SRDL" type="mmio" bar="SPIBAR" offset="0xF0" size="4" desc="Soft Reset Data Lock">
+      <field name="SSL"  bit="0"  size="1" desc="Set_Stap Lock"/>
+    </register>
+
+    <!-- CPU Model Specific Registers -->
+    <register name="MSR_PKG_CST_CONFIG_CONTROL" type="msr" msr="0xE2" desc="C-State Configuration Register">
+      <field name="PACKAGE_C_STATE_LIMIT" bit="0"  size="3" desc="Lowest processor-specific C-state" />
+      <field name="IO_MWAIT_RE_EN"        bit="10" size="1" desc="Map IO_read instructions" />
+      <field name="LOCK"                  bit="15" size="1" desc="Lock MSR_PKG_CST_CONFIG_CONTROL register" />
+      <field name="C3_AUTO_DEMO_EN"       bit="25" size="1" desc="Demote C6/C7 requests to C3" />
+      <field name="C1_AUTO_DEMO_EN"       bit="26" size="1" desc="Demote C3/C6/C7 requests to C1" />
+      <field name="EN_C3_UNDEMOTION"      bit="27" size="1" desc="Undemotion from demoted C3" />
+      <field name="EN_C1_UNDEMOTION"      bit="28" size="1" desc="Undemotion from demoted C1" />
+    </register>
+    <register name="IA32_SMRR_PHYSMASK"   type="msr" msr="0x1F3" desc="SMRR Range Mask MSR">
+      <field name="Bit9"     bit="9"  size="1"  desc="SMRR bit9" />
+      <field name="Valid"    bit="11" size="1"  desc="SMRR valid" />
+      <field name="PhysMask" bit="12" size="20" desc="SMRR address range mask" />
+    </register>
+
+  </registers>
+
+  <controls>
+    <control name="TSEGBaseLock"  register="LT_LOCK_MEMORY" field="ConfigLock" desc="TSEG Base Lock"/>
+    <control name="TSEGLimitLock" register="LT_LOCK_MEMORY" field="ConfigLock" desc="TSEG Limit Lock"/>
+  </controls>
+
+</configuration>

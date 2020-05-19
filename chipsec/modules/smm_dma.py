@@ -1,3 +1,25 @@
+#!/usr/bin/env python
+#
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+#
 #CHIPSEC: Platform Security Assessment Framework
 #Copyright (c) 2010-2020, Intel Corporation
 #
@@ -16,7 +38,6 @@
 #
 #Contact information:
 #chipsec@intel.com
-#
 
 
 
@@ -43,6 +64,9 @@ class smm_dma(BaseModule):
         BaseModule.__init__(self)
 
     def is_supported(self):
+        self.res = ModuleResult.NOTAPPLICABLE
+        # @TODO: currently, this module cannot run on macOS
+        if self.cs.helper.is_macos(): return False
         if self.cs.is_atom(): return False
         if self.cs.is_server(): return False
         else: return True
@@ -50,8 +74,11 @@ class smm_dma(BaseModule):
     def check_tseg_locks(self):
         tseg_base_lock = self.cs.get_control('TSEGBaseLock')
         tseg_limit_lock = self.cs.get_control('TSEGLimitLock')
+        ia_untrusted = 0
+        if self.cs.is_register_defined('MSR_BIOS_DONE') and self.cs.register_has_field('MSR_BIOS_DONE', 'IA_UNTRUSTED'):
+            ia_untrusted = self.cs.read_register_field('MSR_BIOS_DONE', 'IA_UNTRUSTED')
 
-        if tseg_base_lock and tseg_limit_lock:
+        if (tseg_base_lock and tseg_limit_lock) or (0 != ia_untrusted):
             self.logger.log_good( "TSEG range is locked" )
             return ModuleResult.PASSED
         else:

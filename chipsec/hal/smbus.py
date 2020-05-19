@@ -1,4 +1,25 @@
 #!/usr/bin/python
+#
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+#
 #CHIPSEC: Platform Security Assessment Framework
 #Copyright (c) 2010-2020, Intel Corporation
 #
@@ -17,21 +38,13 @@
 #
 #Contact information:
 #chipsec@intel.com
-#
-
-
-
-# -------------------------------------------------------------------------------
-#
-# CHIPSEC: Platform Hardware Security Assessment Framework
-#
-# -------------------------------------------------------------------------------
 
 """
 Access to SMBus Controller
 """
 
 from chipsec.hal import iobar, hal_base
+from chipsec.chipset import RegisterNotFoundError
 
 SMBUS_COMMAND_QUICK         = 0
 SMBUS_COMMAND_BYTE          = 1
@@ -64,7 +77,7 @@ class SMBus(hal_base.HALBase):
             (sba_base, sba_size) = self.iobar.get_IO_BAR_base_address( 'SMBUS_BASE' )
             return sba_base
         else:
-            raise iobar.IOBARNotFoundError ('IOBARAccessError: SMBUS_BASE')
+            raise iobar.IOBARNotFoundError('IOBARAccessError: SMBUS_BASE')
 
     def get_SMBus_HCFG( self ):
         if self.cs.is_register_defined( 'SMBUS_HCFG' ):
@@ -72,7 +85,7 @@ class SMBus(hal_base.HALBase):
             if self.logger.HAL: self.cs.print_register( 'SMBUS_HCFG', reg_value )
             return reg_value
         else:
-            raise self.cs.RegisterNotFoundError ('RegisterNotFound: SMBUS_HCFG')
+            raise RegisterNotFoundError('RegisterNotFound: SMBUS_HCFG')
 
     def display_SMBus_info( self ):
         if self.logger.HAL: self.logger.log( "[smbus] SMBus Base Address: 0x{:04X}".format(self.get_SMBus_Base_Address()) )
@@ -91,7 +104,7 @@ class SMBus(hal_base.HALBase):
 
     def is_SMBus_host_controller_enabled( self ):
         hcfg = self.get_SMBus_HCFG()
-        return self.cs.get_register_field("SMBUS_HCFG", hcfg, "HST_EN")
+        return hcfg.CFG_REG_PCH_SMB_HCFG_HST_EN
 
     def enable_SMBus_host_controller( self ):
         # Enable SMBus Host Controller Interface in HCFG
@@ -113,7 +126,7 @@ class SMBus(hal_base.HALBase):
 
     #
     # SMBus commands
-    # 
+    #
 
     # waits for SMBus to become ready
     def _is_smbus_ready( self ):

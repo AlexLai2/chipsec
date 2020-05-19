@@ -1,0 +1,389 @@
+<?xml version="1.0"?>
+<configuration platform="ICL">
+<!-- XML configuration file for Ice Lake based platforms -->
+<!--
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+
+CHIPSEC: Platform Security Assessment Framework
+Copyright (c) 2018-2020, Intel Corporation
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; Version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Contact information:
+chipsec@intel.com
+-->
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Memory Mapped I/O spaces (MMIO BARs) -->
+  <!--                                      -->
+  <!-- #################################### -->
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Configuration registers              -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <registers>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- MSR Definitions              -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <register name="MSR_BIOS_DONE" type="msr" msr="0x151" desc="BIOS Done Status">
+      <field name="SoC_BIOS_DONE" bit="1" size="1" desc="SoC init done"/>
+      <field name="IA_UNTRUSTED" bit="0" size="1" desc="Untrusted mode enable bit"/>
+    </register>
+
+    <register name="PRMRR_MASK" type="msr" msr="0x1F5" desc="PRMRR MASK register">
+        <field name="PRMRR_LOCK" bit="10" size="1" desc="Lock bit for the PRMRR" />
+        <field name="PRMRR_VLD" bit="11" size="1" desc="Enable bit for the PRMRR" />
+        <field name="PRMRR_mask_bits" bit="12" size="40" desc="PRMRR MASK bits" />
+    </register>
+    <register name="PRMRR_PHYBASE" type="msr" msr="0x2A0" desc="PRMRR BASE Address">
+        <field name="PRMRR_MEMTYPE" bit="0" size="3" desc="PRMRR BASE Memory Type" />
+        <field name="PRMRR_CONFIGURED" bit="3" size="1" desc="PRMRR BASE Configured" />
+        <field name="PRMRR_base_address_fields" bit="12" size="40" desc="PRMRR BASE Address" />
+    </register>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- PCIe Configuration registers -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- PCI MCH Registers -->
+    <register name="PCI0.0.0_GGC" type="pcicfg" bus="0" dev="0" fun="0" offset="0x50" size="2" desc="Graphics Control">
+        <field name="GMS"     bit="8" size="8" desc="GMS" />
+        <field name="GGMS"    bit="6" size="2" desc="GGMS" />
+        <field name="VAMEN"   bit="2" size="1" desc="VAMEN" />
+        <field name="IVD"     bit="1" size="1" desc="IVD" />
+        <field name="GGCLOCK" bit="0" size="1" desc="GGC Lock"/>
+    </register>
+    <register name="PCI0.0.0_PAVPC" type="pcicfg" bus="0" dev="0" fun="0" offset="0x58" size="4" desc="PAVP Control">
+        <field name="PCMBASE" bit="20" size="12" desc="PCMBASE" />
+        <field name="WOPCM" bit="7" size="2" desc="WOPCM Size" />
+        <field name="ASMFEN" bit="6" size="1" desc="ASMF Method Enable" />
+        <field name="OVTATTACK" bit="4" size="1" desc="Override Unsolicited Connection State Attack and Terminate" />
+        <field name="PAVPLCK" bit="2" size="1" desc="PAVP Lock" />
+        <field name="PAVPE" bit="1" size="1" desc="PAVP Enable" />
+        <field name="PCME" bit="0" size="1" desc="PCM Enable" />
+    </register>
+    <register name="PCI0.0.0_DPR" type="pcicfg" bus="0" dev="0" fun="0" offset="0x5C" size="4" desc="DMA Protected Region">
+        <field name="TOPOFDPR" bit="20" size="12" desc="Top of DPR" />
+        <field name="DPRSIZE" bit="4" size="8" desc="DPR Size" />
+        <field name="EPM" bit="2" size="1" desc="DPR Enable" />
+        <field name="PRS" bit="1" size="1" desc="DPR Status" />
+        <field name="LOCK" bit="0" size="1" desc="DPR Lock" />
+    </register>
+    <register name="PCI0.0.0_BDSM" type="pcicfg" bus="0" dev="0" fun="0" offset="0xB0" size="4" desc="Base of Graphics Stolen Memory">
+        <field name="BDSM" bit="20" size="12" desc="DSM Base" />
+        <field name="LOCK" bit="0"  size="1"  desc="Lock" />
+    </register>
+
+    <!-- MCHBAR registers -->
+    <register name="IMR_IA_EX_BASE" type="mmio" bar="MCHBAR" offset="0x6A40" size="8" desc="IMR IA Exclude Range base">
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+        <field name="BASE" bit="10" size="28" desc="Base" />
+    </register>
+    <register name="IMR_IA_EX_LIMIT" type="mmio" bar="MCHBAR" offset="0x6A48" size="8" desc="IMR IA Exclude Range mask">
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+        <field name="LIMIT" bit="10" size="28" desc="Mask" />
+    </register>
+    <register name="IMR_GT_EX_BASE" type="mmio" bar="MCHBAR" offset="0x6A50" size="8" desc="IMR GT Exclude Range base">
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+        <field name="BASE" bit="10" size="28" desc="Base" />
+    </register>
+    <register name="IMR_GT_EX_LIMIT" type="mmio" bar="MCHBAR" offset="0x6A58" size="8" desc="IMR GT Exclude Range mask">
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+        <field name="LIMIT" bit="10" size="28" desc="Mask" />
+    </register>
+    <register name="IMR_BASE_0" type="mmio" bar="MCHBAR" offset="0x7900" size="4" desc="Isolated Memory Range 0 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_0" type="mmio" bar="MCHBAR" offset="0x7904" size="4" desc="Isolated Memory Range 0 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_1" type="mmio" bar="MCHBAR" offset="0x7920" size="4" desc="Isolated Memory Range 1 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_1" type="mmio" bar="MCHBAR" offset="0x7924" size="4" desc="Isolated Memory Range 1 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_2" type="mmio" bar="MCHBAR" offset="0x7940" size="4" desc="Isolated Memory Range 2 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_2" type="mmio" bar="MCHBAR" offset="0x7944" size="4" desc="Isolated Memory Range 2 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_3" type="mmio" bar="MCHBAR" offset="0x7960" size="4" desc="Isolated Memory Range 3 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_3" type="mmio" bar="MCHBAR" offset="0x7964" size="4" desc="Isolated Memory Range 3 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_4" type="mmio" bar="MCHBAR" offset="0x7980" size="4" desc="Isolated Memory Range 4 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_4" type="mmio" bar="MCHBAR" offset="0x7984" size="4" desc="Isolated Memory Range 4 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_5" type="mmio" bar="MCHBAR" offset="0x79A0" size="4" desc="Isolated Memory Range 5 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_5" type="mmio" bar="MCHBAR" offset="0x79A4" size="4" desc="Isolated Memory Range 5 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_6" type="mmio" bar="MCHBAR" offset="0x79C0" size="4" desc="Isolated Memory Range 6 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_6" type="mmio" bar="MCHBAR" offset="0x79C4" size="4" desc="Isolated Memory Range 6 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_7" type="mmio" bar="MCHBAR" offset="0x79E0" size="4" desc="Isolated Memory Range 7 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_7" type="mmio" bar="MCHBAR" offset="0x79E4" size="4" desc="Isolated Memory Range 7 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_8" type="mmio" bar="MCHBAR" offset="0x7A00" size="4" desc="Isolated Memory Range 8 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_8" type="mmio" bar="MCHBAR" offset="0x7A04" size="4" desc="Isolated Memory Range 8 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_9" type="mmio" bar="MCHBAR" offset="0x7A20" size="4" desc="Isolated Memory Range 9 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_9" type="mmio" bar="MCHBAR" offset="0x7A24" size="4" desc="Isolated Memory Range 9 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+    <register name="IMR_BASE_10" type="mmio" bar="MCHBAR" offset="0x7A40" size="4" desc="Isolated Memory Range 10 base">
+        <field name="BASE" bit="0" size="29" desc="IMR Base" />
+    </register>
+    <register name="IMR_MASK_10" type="mmio" bar="MCHBAR" offset="0x7A44" size="4" desc="Isolated Memory Range 10 Mask">
+        <field name="MASK" bit="0" size="29" desc="IMR Mask" />
+        <field name="EN" bit="31" size="1" desc="IMR Enable" />
+    </register>
+
+    <!-- VT-d register updates -->
+    <register name="VTBAR_PMEN" type="mmio" bar="VTBAR" offset="0x64" size="4" desc="Protected Memory Enable">
+        <field name="PRS" bit="0"  size="1"  desc="Protected Region Status"/>
+        <field name="EPM" bit="31" size="1"  desc="Enable Protected Memory"/>
+    </register>
+    <register name="VTBAR_PLMBASE" type="mmio" bar="VTBAR" offset="0x68" size="4" desc="Protected Memory Low Base">
+        <field name="PLMB" bit="20" size="12" desc="Protected Low-Memory Base"/>
+    </register>
+    <register name="VTBAR_PLMLIMIT" type="mmio" bar="VTBAR" offset="0x6C" size="4" desc="Protected Memory Low Limit">
+        <field name="PLML" bit="20" size="12" desc="Protected Low-Memory Limit"/>
+    </register>
+    <register name="VTBAR_PHMBASE" type="mmio" bar="VTBAR" offset="0x70" size="8" desc="Protected Memory High Base">
+        <field name="PHMB" bit="20" size="44" desc="Protected High-Memory Base"/>
+    </register>
+    <register name="VTBAR_PHMLIMIT" type="mmio" bar="VTBAR" offset="0x78" size="8" desc="Protected Memory High Limit">
+        <field name="PHML" bit="20" size="44" desc="Protected High-Memory Limit"/>
+    </register>
+
+    <!-- GTTMMADR register information -->
+    <register name="IGD_CARR_BASE_0" type="mmio" bar="GTTMMADR" offset="0x4150" size="4" desc="Config Access Range Register 0 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_0" type="mmio" bar="GTTMMADR" offset="0x4154" size="4" desc="Config Access Range Register 0 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_1" type="mmio" bar="GTTMMADR" offset="0x4158" size="4" desc="Config Access Range Register 1 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_1" type="mmio" bar="GTTMMADR" offset="0x415C" size="4" desc="Config Access Range Register 1 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_2" type="mmio" bar="GTTMMADR" offset="0x4160" size="4" desc="Config Access Range Register 2 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_2" type="mmio" bar="GTTMMADR" offset="0x4164" size="4" desc="Config Access Range Register 2 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_3" type="mmio" bar="GTTMMADR" offset="0x4168" size="4" desc="Config Access Range Register 3 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_3" type="mmio" bar="GTTMMADR" offset="0x416C" size="4" desc="Config Access Range Register 3 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_4" type="mmio" bar="GTTMMADR" offset="0x4170" size="4" desc="Config Access Range Register 4 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_4" type="mmio" bar="GTTMMADR" offset="0x4174" size="4" desc="Config Access Range Register 4 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_5" type="mmio" bar="GTTMMADR" offset="0x4178" size="4" desc="Config Access Range Register 5 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_5" type="mmio" bar="GTTMMADR" offset="0x417C" size="4" desc="Config Access Range Register 5 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_6" type="mmio" bar="GTTMMADR" offset="0x4180" size="4" desc="Config Access Range Register 6 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_6" type="mmio" bar="GTTMMADR" offset="0x4184" size="4" desc="Config Access Range Register 6 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_CARR_BASE_7" type="mmio" bar="GTTMMADR" offset="0x4188" size="4" desc="Config Access Range Register 7 Base">
+        <field name="VALID" bit="0" size="1" desc="Register valid" />
+        <field name="ACCESS" bit="1" size="1" desc="Access permissions" />
+        <field name="BASE" bit="2" size="20" desc="Base address" />
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+    <register name="IGD_CARR_LIMIT_7" type="mmio" bar="GTTMMADR" offset="0x418C" size="4" desc="Config Access Range Register 7 Limit">
+        <field name="LOCK" bit="31" size="1" desc="Register lock" />
+        <field name="LIMIT" bit="0" size="22" desc="Range limit" />
+    </register>
+    <register name="IGD_RC6CTXBASE" type="mmio" bar="GTTMMADR" offset="0xD48" size="8" desc="RC6 Context Base">
+        <field name="BASE" bit="12" size="52" desc="RC6 Context Base Address" />
+        <field name="LOCK" bit="0" size="1" desc="RC6 Context Lock" />
+    </register>
+    <register name="IGD_MDRB_CTXBASE" type="mmio" bar="GTTMMADR" offset="0xDC8" size="4" desc="MDRB Context Base">
+        <field name="BASE" bit="6" size="26" desc="MDRB Context Base Address" />
+        <field name="ENABLE" bit="0" size="1" desc="MDRB Context Enable" />
+    </register>
+    <register name="IGD_TOLUD" type="mmio" bar="GTTMMADR" offset="0x108000" size="4" desc="GTT copy of TOLUD">
+        <field name="TOLUD" bit="20" size="12" desc="TOLUD base" />
+    </register>
+    <register name="IGD_TOUUD" type="mmio" bar="GTTMMADR" offset="0x108080" size="8" desc="GTT copy of TOUUD">
+        <field name="TOUUD" bit="20" size="44" desc="TOUUD base" />
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+    </register>
+    <register name="IGD_BGSM" type="mmio" bar="GTTMMADR" offset="0x108100" size="4" desc="GTT copy of GSM">
+        <field name="BGSM" bit="20" size="12" desc="GSM base" />
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+    </register>
+    <register name="IGD_BDSM" type="mmio" bar="GTTMMADR" offset="0x1080C0" size="4" desc="GTT copy of DSM">
+        <field name="BDSM" bit="20" size="12" desc="DSM base" />
+        <field name="LOCK" bit="0" size="1" desc="Lock" />
+    </register>
+    <register name="IGD_GGC" type="mmio" bar="GTTMMADR" offset="0x108040" size="4" desc="GTT copy of GGC">
+        <field name="GMS"     bit="8" size="8" desc="GMS" />
+        <field name="GGMS"    bit="6" size="2" desc="GGMS" />
+        <field name="VAMEN"   bit="2" size="1" desc="VAMEN" />
+        <field name="IVD"     bit="1" size="1" desc="IVD" />
+        <field name="GGCLOCK" bit="0" size="1" desc="GGC Lock"/>
+    </register>
+    <register name="IGD_TSEGMB" type="mmio" bar="GTTMMADR" offset="0x108400" size="8" desc="GTT copy of TSEGMB">
+        <field name="TSEGMB" bit="20" size="44" desc="TSEGMB" />
+    </register>
+    <register name="IGD_DPR" type="mmio" bar="GTTMMADR" offset="0x108140" size="8" desc="Computed DPR base">
+        <field name="BDPR" bit="20" size="44" desc="DPR base" />
+    </register>
+    <register name="IGD_PAVPC" type="mmio" bar="GTTMMADR" offset="0x1082C0" size="4" desc="GTT copy of PAVPC Control">
+        <field name="PCMBASE" bit="20" size="12" desc="PCMBASE" />
+        <field name="WOPCM" bit="7" size="2" desc="WOPCM Size" />
+        <field name="ASMFEN" bit="6" size="1" desc="ASMF Method Enable" />
+        <field name="OVTATTACK" bit="4" size="1" desc="Override Unsolicited Connection State Attack and Terminate" />
+        <field name="PAVPLCK" bit="2" size="1" desc="PAVP Lock" />
+        <field name="PAVPE" bit="1" size="1" desc="PAVP Enable" />
+        <field name="PCME" bit="0" size="1" desc="PCM Enable" />
+    </register>
+    <register name="IGD_MEMRR_BASE" type="mmio" bar="GTTMMADR" offset="0x108340" size="8" desc="MEMRR Base Register">
+        <field name="PRMRR_base_address_fields" bit="12" size="40" desc="MEMRR BASE Address" />
+    </register>
+    <register name="IGD_MEMRR_MASK" type="mmio" bar="GTTMMADR" offset="0x108380" size="8" desc="MEMRR Base Register">
+        <field name="PRMRR_LOCK" bit="10" size="1" desc="Lock bit for the MEMRR" />
+        <field name="PRMRR_VLD" bit="11" size="1" desc="Enable bit for the MEMRR" />
+        <field name="PRMRR_mask_bits" bit="12" size="40" desc="MEMRR MASK" />
+    </register>
+    <register name="IGD_MPMEN" type="mmio" bar="GTTMMADR" offset="0x108180" size="4" desc="Protected Memory Enable">
+        <field name="PRS" bit="0"  size="1"  desc="Protected Region Status"/>
+        <field name="EPM" bit="31" size="1"  desc="Enable Protected Memory"/>
+    </register>
+    <register name="IGD_MPLMBASE" type="mmio" bar="GTTMMADR" offset="0x1081C0" size="4" desc="Protected Memory Low Base">
+        <field name="PLMB" bit="20" size="12" desc="Protected Low-Memory Base"/>
+    </register>
+    <register name="IGD_MPLMLIMIT" type="mmio" bar="GTTMMADR" offset="0x108200" size="4" desc="Protected Memory Low Limit">
+        <field name="PLML" bit="20" size="12" desc="Protected Low-Memory Limit"/>
+    </register>
+    <register name="IGD_MPHMBASE" type="mmio" bar="GTTMMADR" offset="0x108240" size="8" desc="Protected Memory High Base">
+        <field name="PHMB" bit="20" size="44" desc="Protected High-Memory Base"/>
+    </register>
+    <register name="IGD_MPHMLIMIT" type="mmio" bar="GTTMMADR" offset="0x108280" size="8" desc="Protected Memory High Limit">
+        <field name="PHML" bit="20" size="44" desc="Protected High-Memory Limit"/>
+    </register>
+    <register name="GT_FORCE_WAKE" type="mmio" bar="GTTMMADR" offset="0xA188" size="4" desc="GT Force Wake register">
+        <field name="WAKE_MASK" bit="16" size="16" desc="GT thread wake mask" />
+        <field name="WAKE_REQUEST" bit="0" size="16" desc="GT thread wake request" />
+    </register>
+    <register name="GTSP1" type="mmio" bar="GTTMMADR" offset="0x130044" size="4" desc="GT scratch pad 1">
+        <field name="WAKE_REQUEST" bit="0" size="16" desc="GT thread wake request status" />
+    </register>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- MMIO registers               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+  </registers>
+</configuration>
+

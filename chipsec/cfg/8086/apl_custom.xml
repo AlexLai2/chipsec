@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<configuration platform="APL">
+<!-- XML configuration for Apollo Lake / Braswell based SoCs
+-->
+<!--
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+
+CHIPSEC: Platform Security Assessment Framework
+Copyright (c) 2018-2020, Intel Corporation
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; Version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Contact information:
+chipsec@intel.com
+-->
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Configuration registers              -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <registers>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- MMIO registers               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <register name="IGD_CONFIG_0" type="mmio" bar="GTTMMADR" offset="0x0D00" size="4" desc="Config Register for RPM Unit">
+      <field name="DISABLE_TSC_SYNC" bit="0" size="1" desc="TSC synchronization disable" />
+      <field name="ICB" bit="1" size="3" desc="Workaround enable bits" />
+      <field name="LOCK" bit="31" size="1" desc="Register lock" />
+    </register>
+
+
+    <!-- SPI Flash Controller MMIO registers -->
+    <register name="HSFS" type="mmio" bar="SPIBAR" offset="0x4" size="2" desc="HW sequencing flash status">
+      <field name="FDONE"   bit="0"  size="1" desc="Flash Cycle Done"/>
+      <field name="FCERR"   bit="1"  size="1" desc="Flash Cycle Error"/>
+      <field name="AEL"     bit="2"  size="1" desc="Access Error Log"/>
+      <field name="SCIP"    bit="5"  size="1" desc="SPI cycle in progress"/>
+      <field name="WRSDIS"  bit="11" size="1" desc="Write status disable"/>
+      <field name="PR34LKD" bit="12" size="1" desc="PRR3 PRR4 Lock-Down"/>
+      <field name="FDOPSS"  bit="13" size="1" desc="Flash Descriptor Override Pin-Strap Status"/>
+      <field name="FDV"     bit="14" size="1" desc="Flash Descriptor Valid"/>
+      <field name="FLOCKDN" bit="15" size="1" desc="Flash Configuration Lock-Down"/>
+      <field name="FGO"     bit="16" size="1" desc="Flash cycle go"/>
+      <field name="FCYCLE"  bit="17" size="4" desc="Flash Cycle Type"/>
+      <field name="WET"     bit="21" size="1" desc="Write Enable Type"/>
+      <field name="FDBC"    bit="24" size="6" desc="Flash Data Byte Count"/>
+      <field name="FSMIE"   bit="31" size="1" desc="Flash SPI SMI Enable"/>
+    </register>
+  </registers>
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- 'Controls'                           -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <controls>
+      <control name="SpiWriteStatusDis"      register="HSFS"  field="WRSDIS"  desc="Write Status Disable"/>
+  </controls>
+</configuration>

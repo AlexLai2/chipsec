@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<configuration platform="PCH_5XX">
+<!--
+XML configuration file for 5XX series pch
+Based Upon 575857 and 608531
+-->
+<!--
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+
+CHIPSEC: Platform Security Assessment Framework
+Copyright (c) 2020, Intel Corporation
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; Version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Contact information:
+chipsec@intel.com
+-->
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Integrated devices                   -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <pci>
+  </pci>
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Memory Mapped I/O spaces (MMIO BARs) -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <mmio>
+  </mmio>
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- I/O spaces (I/O BARs)                -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <io>
+  </io>
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Memory ranges                        -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <memory>
+  </memory>
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Configuration registers              -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <registers>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- MSR Definitions              -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- PCIe Configuration registers -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- Sideband Register Access Registers -->
+    <register name="EPMASK0" type="mmcfg" device="P2SBC" offset="0x220" size="4" desc="Endpoint Mask 0">
+    </register>
+    <register name="EPMASK1" type="mmcfg" device="P2SBC" offset="0x224" size="4" desc="Endpoint Mask 1">
+    </register>
+    <register name="EPMASK2" type="mmcfg" device="P2SBC" offset="0x228" size="4" desc="Endpoint Mask 2">
+    </register>
+    <register name="EPMASK3" type="mmcfg" device="P2SBC" offset="0x22C" size="4" desc="Endpoint Mask 3">
+    </register>
+    <register name="EPMASK4" type="mmcfg" device="P2SBC" offset="0x230" size="4" desc="Endpoint Mask 4">
+    </register>
+    <register name="EPMASK5" type="mmcfg" device="P2SBC" offset="0x234" size="4" desc="Endpoint Mask 5">
+      <field name="REMOVE_ACCESS"   bit="26" size="4" desc="Primary-to-sideband endpoint mask configuration"/>
+    </register>
+    <register name="EPMASK6" type="mmcfg" device="P2SBC" offset="0x238" size="4" desc="Endpoint Mask 6">
+    </register>
+    <register name="EPMASK7" type="mmcfg" device="P2SBC" offset="0x23C" size="4" desc="Endpoint Mask 7">
+      <field name="REMOVE_ACCESS"   bit="30" size="2" desc="Primary-to-sideband endpoint mask configuration"/>
+    </register>
+
+    <!-- Power Management Controller -->
+    <register name="ETR3" type="mmio" bar="PWRMBASE" offset="0x1048" size="4" desc="Extended Test Mode Register">
+      <field name="CF9LOCK" bit="31" size="1" desc=""/>
+    </register>
+
+    <register name="ACTL" type="mmio" bar="PWRMBASE" offset="0x1BD8" size="4" desc="ACPI Control">
+      <field name="SCIS"    bit="0" size="3" desc="SCI IRQ Select"/>
+      <field name="EN"      bit="7" size="1" desc="ACPI Enable"/>
+      <field name="PWRM_EN" bit="8" size="1" desc="PWRM Enable"/>
+    </register>
+
+    <register name="PM_CFG" type="mmio" bar="PWRMBASE" offset="0x1818" size="4" desc="Power Management Configuration Reg 1">
+      <field name="BIT27" bit="27" size="1" desc="BIT 27"/>
+      <field name="BIT22" bit="22" size="1" desc="BIT 22"/>
+    </register>
+
+    <register name="GEN_PMCON_2" type="mmio" bar="PWRMBASE" offset="0x1024" size="4" desc="General PM Configuration B">
+      <field name="SMI_LOCK"        bit="4"  size="1" />
+      <field name="VR_CONFIG_LOCK"  bit="17" size="1" desc="Locks EXT_RAIL_CONFIG and EXT_V1P05_VR_CONFIG"/>
+    </register>
+
+    <register name="SSML" type="mmio" bar="PWRMBASE" offset="0x104C" size="4" desc="Strap message lock register">
+        <field name="SSL" bit="0" size="1" desc="Set Strap Lock" />
+    </register>
+
+    <!-- SMBus Host Controller -->
+
+
+    <!-- SPI Interface Controller -->
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- MMIO registers               -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- PCH SPIBAR registers -->
+    <register name="HSFS" type="mmio" bar="SPIBAR" offset="0x04" size="4" desc="Hardware Sequencing Flash Status Register">
+      <field name="FDONE"           bit="0"  size="1" desc="Flash Cycle Done"/>
+      <field name="FCERR"           bit="1"  size="1" desc="Flash Cycle Error"/>
+      <field name="AEL"             bit="2"  size="1" desc="Access Error Log"/>
+      <field name="SAF_ERROR"       bit="3"  size="1" desc="SAF Error"/>
+      <field name="SAF_DLE"         bit="4"  size="1" desc="SAF Data Length Error"/>
+      <field name="SCIP"            bit="5"  size="1" desc="SPI cycle in progress"/>
+      <field name="SAF_LE"          bit="6"  size="1" desc="SAF link Error"/>
+      <field name="SAF_MODE_ACTIVE" bit="7"  size="1" desc="SAF Mode Active"/>
+      <field name="SAF_CE"          bit="8"  size="1" desc="SAF ctype error "/>
+      <field name="WRSDIS"          bit="11" size="1" desc="Write status disable"/>
+      <field name="PR34LKD"         bit="12" size="1" desc="PRR3 PRR4 Lock-Down"/>
+      <field name="FDOPSS"          bit="13" size="1" desc="Flash Descriptor Override Pin-Strap Status"/>
+      <field name="FDV"             bit="14" size="1" desc="Flash Descriptor Valid"/>
+      <field name="FLOCKDN"         bit="15" size="1" desc="Flash Configuration Lock-Down"/>
+      <field name="FGO"             bit="16" size="1" desc="Flash cycle go"/>
+      <field name="FCYCLE"          bit="17" size="4" desc="Flash Cycle Type"/>
+      <field name="WET"             bit="21" size="1" desc="Write Enable Type"/>
+      <field name="FDBC"            bit="24" size="6" desc="Flash Data Byte Count"/>
+      <field name="FSMIE"           bit="31" size="1" desc="Flash SPI SMI# Enable"/>
+    </register>
+
+    <register name="FDOC" type="mmio" bar="SPIBAR" offset="0xB4" size="4" desc="Flash Descriptor Observability Control">
+      <field name="FDSS" bit="12" size="3" desc="Flash Descriptor Section Select"/>
+      <field name="FDSI" bit="2" size="10" desc="Flash Descriptor Section Index"/>
+    </register>
+    <register name="FDOD" type="mmio" bar="SPIBAR" offset="0xB8" size="4" desc="Flash Descriptor Observability Data">
+      <field name="FDSD" bit="0" size="32" desc="Flash Descriptor Section Data"/>
+    </register>
+
+    <!-- DCI registers -->
+    <register name="ECTRL" type="mm_msgbus" port="0xB8" offset="0x0004" size="4" desc="DCI Control Register">
+      <field name="LOCK" bit="0" size="1"/>
+      <field name="ENABLE" bit="4" size="1"/>
+      <field name="AVAILABLE" bit="8" size="1"/>
+    </register>
+
+    <!-- MISC registers -->
+        <register name="MPC" type="pcicfg" bus="0" dev="0x28" fun="0" offset="0xd8" size="4" desc="Miscellaneous Port Configuration">
+      <field name ="LOCK" bit="23" size="1" desc="When this bit is set, all the secured registers will be locked and will be Read-Only." />
+    </register>
+
+    <!-- PCH RTC registers -->
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- I/O registers (I/O ports)    -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- PCH TCOBASE (SMBus TCO) I/O registers -->
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--      Undefined Registers     -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  </registers>
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- 'Controls'                           -->
+  <!--                                      -->
+  <!-- #################################### -->
+
+</configuration>

@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<configuration platform="AVN">
+<!--
+# *********************************************************
+#
+#                   PRE-RELEASE NOTICE
+#
+#    This software specifically enables pre-production
+#    hardware provided by Intel Corporation.  The terms
+#    describing your rights and responsibilities to use
+#    such hardware are covered by a separate evaluation
+#    agreement.  Of specific note in that agreement is
+#    the requirement that you do not release or publish
+#    information on the hardware without the specific
+#    written authorization of Intel Corporation.
+#
+#    Intel Corporation requests that you do not release,
+#    publish, or distribute this software until you are
+#    specifically authorized.  These terms are deleted
+#    upon publication of this software.
+#
+# *********************************************************
+
+CHIPSEC: Platform Security Assessment Framework
+Copyright (c) 2020, Intel Corporation
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; Version 2.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+Contact information:
+chipsec@intel.com
+-->
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Integrated devices                   -->
+  <!--                                      -->
+  <!-- #################################### -->
+
+
+  <pci>
+    <!-- PCI Root Controllers 501524 40.1 -->
+    <device name="PCIR_CONTROLLER1" bus="0" dev="0x1" fun="0" />
+    <device name="PCIR_CONTROLLER2" bus="0" dev="0x2" fun="0" />
+    <device name="PCIR_CONTROLLER3" bus="0" dev="0x3" fun="0" />
+    <device name="PCIR_CONTROLLER4" bus="0" dev="0x4" fun="0" />
+    <!-- 510524 41.0 -->
+    <device name="HBFR" bus="0" dev="0xE" fun="0" />
+    <!-- 510524 47.2 -->
+    <device name="SATA" bus="0" dev="0x18" fun="0" />
+  </pci>
+
+
+
+  <!-- #################################### -->
+  <!--                                      -->
+  <!-- Memory Mapped I/O spaces (MMIO BARs) -->
+  <!--                                      -->
+  <!-- #################################### -->
+  <mmio>
+    <bar name="IBASE"   register="IBASE"  base_field="Base" size="0x200"    enable_field="Enable" desc="iLB Base"/>
+    <bar name="ABASE"  register="ABASE"    base_field="Base"   size="0x200" desc="ACPI Base Address"/>
+  </mmio>
+
+  <registers>
+    <!-- Config Space-->
+    <!-- 510524 41.2.4.3.1-->
+    <register name="RTF_BMBOUND" type="pcicfg" device="HBFR" offset="0x404" size="4" desc="RTF BMBOUND register" >
+      <field name="LOCK" bit="0" size="1" desc="BMBOUND register is locked" />
+    </register>
+    <register name="RTF_BMBOUNDHI" type="pcicfg" device="HBFR" offset="0x408" size="4" desc="RTF BMBOUNDHI register" >
+      <field name="LOCK" bit="0" size="1" desc="BMBOUNDHU register is locked" />
+    </register>
+    <!-- Not in 510524, referenced by BWG-->
+    <register name="PLKCTL_RTF" type="pcicfg" device="HBFR" offset="0x414" size="4" desc="RTF plk lock" >
+      <field name="CL" bit="0" size="1" desc="Control Lock" /> 
+    </register>
+    <register name="PLKCTL_D1" type="pcicfg" device="PCIR_CONTROLLER1" offset="0xEA" size="4" desc="D1 plk lock" >
+      <field name="CL" bit="0" size="1" desc="Control Lock" /> 
+    </register>
+    <register name="PLKCTL_D2" type="pcicfg" device="PCIR_CONTROLLER2" offset="0xEA" size="4" desc="D2 plk lock" >
+      <field name="CL" bit="0" size="1" desc="Control Lock" /> 
+    </register>
+    <register name="PLKCTL_D3" type="pcicfg" device="PCIR_CONTROLLER3" offset="0xEA" size="4" desc="D3 plk lock" >
+      <field name="CL" bit="0" size="1" desc="Control Lock" /> 
+    </register>
+    <register name="PLKCTL_D4" type="pcicfg" device="PCIR_CONTROLLER4" offset="0xEA" size="4" desc="D4 plk lock" >
+      <field name="CL" bit="0" size="1" desc="Control Lock" /> 
+    </register>
+    <!-- 510524 47.2.4.3.4  -->
+    <register name="SATAGC" type="pcicfg" device="SATA" offset="0x9C" size="4" desc="SATA General Configuration">
+        <field name="REGLOCK" bit="31" size="1" desc="Register lock"/>
+    </register>
+    <!-- 510524 48.2.4.1.4 -->
+    <register name="IBASE"  type="pcicfg" bus="0" dev="0x1F" fun="0" offset="0x50" size="4" desc="ILB Base Address">
+        <field  name="MEMI"   bit="0"  size="1"  desc="Memory Space Indication"/>
+        <field  name="Enable" bit="1"  size="1"  desc="Enable"/>
+        <field  name="ADDRNG" bit="2"  size="1"  desc="Address Range"/>
+        <field  name="PREF"   bit="3"  size="1"  desc="Prefetchable"/>
+        <field  name="Base"   bit="9"  size="23" desc="Base Address"/>
+      </register>
+      <!-- 510524 48.2.4.1.1-->
+      <register name="ABASE" type="pcicfg" bus="0" dev="0x1F" fun="0" offset="0x44" size="4" desc="ACPI Base Address">
+        <field  name="Base"  bit="9" size="23"   desc="Base Address"/>
+      </register>
+  
+  
+    <!-- Memory-Mapped I/O (MMIO) Registers -->
+    <!-- 510524 48.3.1.1   Defined in common, but different offset-->
+    <register name="GCS" type="mmio" bar="RCBA" offset="0x0" size="4" desc="General Control and Status">
+        <field name="BILD" bit="0"  size="1" desc="BIOS Interface Lock Down"/>
+        <field name="BBS"  bit="10" size="2" desc="Boot BIOS Straps"/>
+    </register>
+    <!-- 510524 48.3.1.2.48-->
+    <register name="RC" type="mmio" offset="0x64" size="4" desc="RTC Configuration">
+      <field name="LL"   bit="0"  size="1" desc="Lower 128 Byte Lock"/>
+      <field name="UL"   bit="1"  size="1" desc="Upper 128 Byte Lock"/>
+    </register>
+    <!-- 510524 48.3.1.4.6 -->
+    <register name="GEN_PMCON_2" type="mmio" bar="ABASE" offset="0x24" size="4" desc="General PM Configuration 2">
+      <field name="SMI_LOCK"    bit="4" size="1" desc="SMI Lock"/>
+      <field name="SLPSX_STR_POL_LOCK" bit="18" size="1" desc=""/>
+     </register>
+     <!-- 501524 48.3.1.4.11 -->
+     <register name="ETR3" type="mmio" bar="ABASE" offset="0x48" size="4" desc="Extended Test Mode Regsiter">
+      <field name="CF9LOCK" bit="31" size="1" desc=""/>
+     </register>
+  
+     <!-- CPU Model Specific Registers -->
+     <!-- no MSR's defined in 501524.... not sure which doc to look at-->
+      <register name="MSR_PKG_CST_CONFIG_CONTROL" type="msr" msr="0xE2" desc="C-State Configuration Register">
+        <field name="LOCK"                  bit="15" size="1" desc="Lock MSR_PKG_CST_CONFIG_CONTROL register" />
+      </register>
+      <register name="POWER_MISC" type="msr" msr="0x120"  desc="">
+        <field name="Bit6" bit="6" size="1" desc="BIT6" />
+      </register>
+  
+  
+      <!-- Sideband Registers-->
+      <register name="BIOS_RESET_CPL" type="msgbus" port="0x4" offset="0x5" desc="bios reset">
+          <field name="BIOS_RESET_DONE" bit="0" size="1"  desc=""/>
+      </register>
+      <!-- 510524 39.5.4.10-->
+      <register name="BSMMRRH" type="msgbus" port="0x3" offset="0x2F" desc="">
+          <field name="SMM_ENABLE" bit="31" size="1" desc=""/>
+      </register>
+      <!-- 510524 39.5.4.14-->
+       <register name="DCO" type="msgbus" port="0x10" offset="0xF" desc="">
+          <field name="CPGCLOCKWARM" bit="9" size="1" desc=""/>
+          <field name="CPGCLOCKCOLD" bit="8" size="1" desc=""/>
+          <field name="DRPLOCK" bit="0" size="1" desc=""/>
+      </register>
+      <!-- 510524 39.5.3.5-->
+      <register name="BIOS_CONFIG" type="msgbus" port="0x4" offset="0x6" desc="">
+          <field name="LOCK" bit="4" size="1" desc="Mailbox Lock"/>
+          <field name="SCRUBEN" bit="7" size="1" desc="Demand Scrub Enable" />
+      </register>
+      <!--TODO: BIMRxL BIMRxH BIMRxRAC BIMRxWAC-->
+  </registers>
+  
+      
+  <controls>
+      <control name="SmmBiosWriteProtection" register="BC"                   field="SMM_BWP"            desc="SMM BIOS Write Protection"/>
+      <control name="SMILock"                register="GEN_PMCON_2"          field="SMI_LOCK"           desc="SMI Global Configuration Lock"/>
+      <control name="SLPSX_LOCK"             register="GEN_PMCON_2"          field="SLPSX_STR_POL_LOCK" desc="" />
+  </controls>
+</configuration>
